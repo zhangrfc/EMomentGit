@@ -48,8 +48,35 @@ public class EBPostTest {
                         post.getPhotoSrcs().get(1));
             }
         }
+    }
 
+    @Test
+    public void getCommentsTest() {
+        String slugTLUrl = EBUtils.getInstance()
+                .getSlugTimelineUrl("university-city");
+        String jsStr = EBConn.getJSON(slugTLUrl);
 
+        JSONArray arr = new JSONObject(jsStr).getJSONArray("results");
+        for (int i=0; i<arr.length(); ++i) {
+            // Find the snow post
+            if (arr.getJSONObject(i).getInt("id") == 2219331) {
+                JSONObject jsPost = arr.getJSONObject(i);
+                EBPost post = new EBPost(jsPost);
+                post.retrieveComments();
+                // Check comments
+                assertEquals(post.getCommentCount(), post.getComments().size());
+                EBComment comment1 = post.getComments().get(0);
+                assertEquals(8560, comment1.getId());
+                assertEquals("https://d3nlbyo2tmce3j.cloudfront.net/images/avatars/1/medium.jpg", comment1.getAvatarSrc());
+                assertEquals("Chaoyi Zha", comment1.getUsername());
+                assertEquals("wow, great!", comment1.getContent());
 
+                EBComment comment2 = post.getComments().get(1);
+                assertEquals(8562, comment2.getId());
+                assertEquals("https://s3.amazonaws.com/everyblock/users/222620/medium.jpg", comment2.getAvatarSrc());
+                assertEquals("Bowen Bao", comment2.getUsername());
+                assertEquals("awesome!", comment2.getContent());
+            }
+        }
     }
 }

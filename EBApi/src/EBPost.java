@@ -32,6 +32,8 @@ public class EBPost {
 
     private List<String> photoSrcs;
 
+    private List<EBComment> comments;
+
     public EBPost(JSONObject jsPost) {
         try {
             id = jsPost.getInt("id");
@@ -53,9 +55,26 @@ public class EBPost {
             commentCount = jsPost.getInt("comment_count");
             // retrieve photos
             retrievePhotos();
+            // retrieve comments
+            retrieveComments();
         } catch (Exception e) {
             e.printStackTrace();
             System.out.println(jsPost.toString());
+        }
+    }
+
+    protected void retrieveComments() {
+        try {
+            if (commentCount == 0) return;
+            comments = new ArrayList<>();
+            Document doc = Jsoup.connect(getPostUrl()).get();
+            Elements commentElems = doc.select("li.comment.cf");
+            for (Element elem : commentElems) {
+                EBComment comment = new EBComment(elem);
+                comments.add(comment);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
@@ -129,5 +148,9 @@ public class EBPost {
 
     public void setDistance(double distance) {
         this.distance = distance;
+    }
+
+    public List<EBComment> getComments() {
+        return comments;
     }
 }

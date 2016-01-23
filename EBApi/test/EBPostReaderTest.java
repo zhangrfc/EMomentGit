@@ -20,8 +20,8 @@ public class EBPostReaderTest {
     @Test
     public void endAtLastPageTest() {
         EBPostReader reader = new EBPostReader(loc);
-        JSONObject jsLastPage = new JSONObject(EBConn.getJSON(
-                EBUtils.getInstance()
+        JSONObject jsLastPage = new JSONObject(
+                EBConn.getJSON(EBUtils.getInstance()
                         .getSlugTimelineUrl("university-city") + "&page=32"));
         assertEquals(false, reader.hasNextPage(jsLastPage));
     }
