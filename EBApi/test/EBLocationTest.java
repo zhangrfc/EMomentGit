@@ -13,7 +13,8 @@ public class EBLocationTest {
     @Test
     public void containTest() {
         try {
-            String apiUrl = "https://api.everyblock.com/gis/philly/neighborhoods/.json?token=70f582975282b7846aa9cf5a55ac09c1d116e5c6";
+            String apiUrl = "https://api.everyblock.com/gis/philly/neighborhoods/.json?token="
+                    + EBUtils.getInstance().getToken();
             String resultStr = EBConn.getJSON(apiUrl);
             JSONArray arr = new JSONObject(resultStr).getJSONObject("data").getJSONArray("features");
 

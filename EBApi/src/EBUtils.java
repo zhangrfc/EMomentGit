@@ -38,6 +38,10 @@ public class EBUtils {
         return utils;
     }
 
+    public String getToken() {
+        return token;
+    }
+
     public String getSlugTimelineUrl(String slugName) {
         return urlPrefix + slugName + urlPostfix + token;
     }
