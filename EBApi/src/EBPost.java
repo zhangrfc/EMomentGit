@@ -1,5 +1,15 @@
-import org.json.JSONArray;
 import org.json.JSONObject;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
+
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.net.URL;
+import java.net.URLConnection;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
 
@@ -14,6 +24,8 @@ public class EBPost {
     private int reactionScore;
     private int reactionCount;
     private int commentCount;
+
+    private List<String> photoSrcs;
 
     public EBPost(JSONObject jsPost) {
         try {
@@ -31,14 +43,32 @@ public class EBPost {
             reactionScore = jsPost.getInt("reaction_score");
             reactionCount = jsPost.getInt("reaction_count");
             commentCount = jsPost.getInt("comment_count");
+            // retrieve photos
+            retrievePhotos();
         } catch (Exception e) {
             e.printStackTrace();
             System.out.println(jsPost.toString());
         }
     }
 
-    protected void retrieveImages() {
+    /**
+     * First go to url + "/photos".
+     * Parse the webpage and retrieve link to photos.
+     * Download the photos (or store the link).
+     */
+    protected void retrievePhotos() {
+        try {
+            photoSrcs = new ArrayList<>();
+            Document doc = Jsoup.connect(getPostUrl() + "photos")
+                    .get();
+            Elements imgSrcs = doc.select("img[src~=(?i)\\.(png|jpe?g|gif)]");
+            for (Element image : imgSrcs) {
+                photoSrcs.add(image.attr("src"));
+            }
 
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public int getId() {
@@ -75,5 +105,9 @@ public class EBPost {
 
     public int getCommentCount() {
         return commentCount;
+    }
+
+    public List<String> getPhotoSrcs() {
+        return photoSrcs;
     }
 }

@@ -19,7 +19,8 @@ public class EBConn {
     public static String getJSON(URL url) {
         try {
             URLConnection conn = url.openConnection();
-            BufferedReader in = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+            BufferedReader in = new BufferedReader(
+                    new InputStreamReader(conn.getInputStream()));
             String line;
             StringBuilder stringBuilder = new StringBuilder();
 

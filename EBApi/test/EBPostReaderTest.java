@@ -14,7 +14,7 @@ public class EBPostReaderTest {
     }
 
     @Test
-    public void readAllPageTest() {
+    public void endAtLastPageTest() {
         EBLocation loc = new EBLocation("University City");
         EBPostReader reader = new EBPostReader(loc);
         JSONObject jsLastPage = new JSONObject(EBConn.getJSON(
@@ -29,5 +29,11 @@ public class EBPostReaderTest {
         EBPostReader reader = new EBPostReader(loc);
         reader.getEBPosts();
         assertEquals(reader.getPostCount(), reader.getEbCompletePostList().size());
+
+        EBPost randPost = reader.getEbCompletePostList().get(200);
+        System.out.println(randPost.getTitle());
+        System.out.println(randPost.getContent());
+        assertNotEquals(null, randPost.getTitle());
+        assertNotEquals(null, randPost.getContent());
     }
 }
