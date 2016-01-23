@@ -1,4 +1,5 @@
 import org.json.JSONObject;
+import org.jsoup.HttpStatusException;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -24,6 +25,10 @@ public class EBPost {
     private int reactionScore;
     private int reactionCount;
     private int commentCount;
+    /**
+     * Distance between user and this post.
+     */
+    private double distance;
 
     private List<String> photoSrcs;
 
@@ -31,8 +36,11 @@ public class EBPost {
         try {
             id = jsPost.getInt("id");
             title = jsPost.getString("title");
-            JSONObject jsCoordinate = jsPost.getJSONArray("location_coordinates").getJSONObject(0);
-            coordinate = new Point(jsCoordinate.getDouble("longitude"), jsCoordinate.getDouble("latitude"));
+            JSONObject jsCoordinate = jsPost.getJSONArray("location_coordinates")
+                    .getJSONObject(0);
+            coordinate = new Point(
+                    jsCoordinate.getDouble("longitude"),
+                    jsCoordinate.getDouble("latitude"));
             if (jsPost.getJSONObject("attributes").has("comment")) {
                 content = jsPost.getJSONObject("attributes").getString("comment");
             } else if (jsPost.getJSONObject("attributes").has("excerpt")) {
@@ -66,6 +74,10 @@ public class EBPost {
                 photoSrcs.add(image.attr("src"));
             }
 
+        } catch (HttpStatusException e) {
+            if (e.getStatusCode() != 404) {
+                e.printStackTrace();
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -109,5 +121,13 @@ public class EBPost {
 
     public List<String> getPhotoSrcs() {
         return photoSrcs;
+    }
+
+    public double getDistance() {
+        return distance;
+    }
+
+    public void setDistance(double distance) {
+        this.distance = distance;
     }
 }

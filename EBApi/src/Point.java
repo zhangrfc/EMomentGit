@@ -14,4 +14,10 @@ public class Point {
         this.x = x;
         this.y = y;
     }
+
+    public double sqrDistTo(Point point) {
+        double xDis = x - point.x;
+        double yDis = y - point.y;
+        return xDis * xDis + yDis * yDis;
+    }
 }

@@ -1,12 +1,16 @@
 import org.json.JSONObject;
 import org.junit.Test;
 
+import java.util.List;
+
 import static org.junit.Assert.*;
 
 /**
 
  */
 public class EBPostReaderTest {
+    private EBLocation loc = new EBLocation("University City");
+
     @Test
     public void SlugNameTest() {
 
@@ -15,7 +19,6 @@ public class EBPostReaderTest {
 
     @Test
     public void endAtLastPageTest() {
-        EBLocation loc = new EBLocation("University City");
         EBPostReader reader = new EBPostReader(loc);
         JSONObject jsLastPage = new JSONObject(EBConn.getJSON(
                 EBUtils.getInstance()
@@ -24,10 +27,9 @@ public class EBPostReaderTest {
     }
 
     @Test
-    public void getAllPosts() {
-        EBLocation loc = new EBLocation("University City");
+    public void getAllPostsTest() {
         EBPostReader reader = new EBPostReader(loc);
-        reader.getEBPosts();
+        reader.retrieveAllEBPosts();
         assertEquals(reader.getPostCount(), reader.getEbCompletePostList().size());
 
         EBPost randPost = reader.getEbCompletePostList().get(200);
@@ -35,5 +37,16 @@ public class EBPostReaderTest {
         System.out.println(randPost.getContent());
         assertNotEquals(null, randPost.getTitle());
         assertNotEquals(null, randPost.getContent());
+    }
+
+    @Test
+    public void sortedPostTest() {
+        EBPostReader reader = new EBPostReader(loc);
+        List<EBPost> posts = reader.retrieveSortedEBPosts();
+        // test random posts
+        assertEquals(true, posts.get(1).getDistance() < posts.get(3).getDistance());
+        assertEquals(true, posts.get(3).getDistance() < posts.get(7).getDistance());
+        assertEquals(true, posts.get(1).getDistance() < posts.get(7).getDistance());
+        assertEquals(true, posts.get(7).getDistance() < posts.get(103).getDistance());
     }
 }

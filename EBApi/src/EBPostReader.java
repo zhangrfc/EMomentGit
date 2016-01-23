@@ -2,6 +2,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 /**
@@ -12,6 +13,13 @@ public class EBPostReader {
     private List<EBPost> ebCompletePostList;
     private int postCount;
 
+    private static class EBPostDistComparator implements Comparator<EBPost> {
+        static EBPostDistComparator INSTANCE = new EBPostDistComparator();
+        @Override
+        public int compare(EBPost post1, EBPost post2) {
+            return Double.compare(post1.getDistance(), post2.getDistance());
+        }
+    }
 
     public EBPostReader(EBLocation location) {
         curLocation = location;
@@ -21,7 +29,7 @@ public class EBPostReader {
         curLocation = location;
     }
 
-    public void getEBPosts() {
+    public void retrieveAllEBPosts() {
         ebCompletePostList = new ArrayList<>();
 
         String curSlugTLUrl = EBUtils.getInstance()
@@ -51,6 +59,22 @@ public class EBPostReader {
             pageNum++;
         }
 
+    }
+
+    public List<EBPost> retrieveSortedEBPosts() {
+        if (ebCompletePostList == null) {
+            retrieveAllEBPosts();
+        }
+        // Compute distance for all posts
+        // Get current location coordinate. For now fake one.
+        Point curPoint = new Point(-75.1985766682, 39.9502619446);
+        for (EBPost post : ebCompletePostList) {
+            post.setDistance(curPoint.sqrDistTo(post.getCoordinate()));
+        }
+
+        // Sort posts based on distance
+        ebCompletePostList.sort(EBPostDistComparator.INSTANCE);
+        return ebCompletePostList;
     }
 
     protected boolean hasNextPage(JSONObject jsPage) {
