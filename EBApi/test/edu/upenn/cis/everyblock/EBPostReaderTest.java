@@ -1,4 +1,7 @@
+package edu.upenn.cis.everyblock;
+
 import org.json.JSONObject;
+import org.junit.Assert;
 import org.junit.Test;
 
 import java.util.List;
@@ -14,7 +17,7 @@ public class EBPostReaderTest {
     @Test
     public void SlugNameTest() {
 
-        //EBPostReader ebPostReader = new EBPostReader();
+        //edu.upenn.cis.everyblock.EBPostReader ebPostReader = new edu.upenn.cis.everyblock.EBPostReader();
     }
 
     @Test
@@ -23,20 +26,20 @@ public class EBPostReaderTest {
         JSONObject jsLastPage = new JSONObject(
                 EBConn.getJSON(EBUtils.getInstance()
                         .getSlugTimelineUrl("university-city") + "&page=32"));
-        assertEquals(false, reader.hasNextPage(jsLastPage));
+        Assert.assertEquals(false, reader.hasNextPage(jsLastPage));
     }
 
     @Test
     public void getAllPostsTest() {
         EBPostReader reader = new EBPostReader(loc);
         reader.retrieveAllEBPosts();
-        assertEquals(reader.getPostCount(), reader.getEbCompletePostList().size());
+        Assert.assertEquals(reader.getPostCount(), reader.getEbCompletePostList().size());
 
         EBPost randPost = reader.getEbCompletePostList().get(200);
         System.out.println(randPost.getTitle());
         System.out.println(randPost.getContent());
-        assertNotEquals(null, randPost.getTitle());
-        assertNotEquals(null, randPost.getContent());
+        Assert.assertNotEquals(null, randPost.getTitle());
+        Assert.assertNotEquals(null, randPost.getContent());
     }
 
     @Test

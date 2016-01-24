@@ -1,3 +1,5 @@
+package edu.upenn.cis.everyblock;
+
 import org.json.JSONArray;
 
 /**
@@ -15,7 +17,7 @@ public class Boundary {
         for (int i=0; i<count; ++i) {
             JSONArray pointJS = coordinates.getJSONArray(i);
             points[i] = new Point(pointJS.getDouble(0), pointJS.getDouble(1));
-            System.out.println("Point: x: " + points[i].x + " y: " + points[i].y);
+            System.out.println("edu.upenn.cis.everyblock.Point: x: " + points[i].x + " y: " + points[i].y);
         }
     }
 
@@ -37,5 +39,24 @@ public class Boundary {
             }
         }
         return result;
+    }
+
+    public String getJSON() {
+        StringBuilder sb = new StringBuilder();
+        if (points.length > 0) {
+            sb.append("\"boundary\":[");
+            boolean first = true;
+            for (Point point : points) {
+                if (!first) sb.append(",");
+                else first = false;
+                sb.append("[")
+                        .append(point.x)
+                        .append(",")
+                        .append(point.y)
+                        .append("]");
+            }
+            sb.append("]");
+        }
+        return sb.toString();
     }
 }

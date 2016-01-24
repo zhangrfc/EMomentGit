@@ -1,3 +1,5 @@
+package edu.upenn.cis.everyblock;
+
 import org.json.JSONObject;
 import org.jsoup.nodes.Element;
 

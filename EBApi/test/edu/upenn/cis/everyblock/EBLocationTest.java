@@ -1,5 +1,8 @@
+package edu.upenn.cis.everyblock;
+
 import org.json.JSONArray;
 import org.json.JSONObject;
+import org.junit.Assert;
 import org.junit.Test;
 
 import java.net.URL;
@@ -29,7 +32,7 @@ public class EBLocationTest {
                     Boundary boundary = new Boundary(coordinates);
                     Point testPt = new Point(-75.1985766682, 39.9502619446);
 
-                    assertEquals(true, boundary.contains(testPt));
+                    Assert.assertEquals(true, boundary.contains(testPt));
                     return;
                 }
             }
@@ -43,6 +46,6 @@ public class EBLocationTest {
     @Test
     public void slugTest() {
         EBLocation location = new EBLocation("Allegheny West");
-        assertEquals("allegheny-west", location.getSlugName());
+        Assert.assertEquals("allegheny-west", location.getSlugName());
     }
 }

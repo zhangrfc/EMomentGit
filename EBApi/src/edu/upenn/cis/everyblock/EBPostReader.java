@@ -1,3 +1,6 @@
+package edu.upenn.cis.everyblock;
+
+import edu.upenn.cis.mongodb.DBWrapper;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -10,6 +13,11 @@ import java.util.List;
  */
 public class EBPostReader {
     private EBLocation curLocation;
+    /**
+     * longitude and latitude of current user location.
+     * Default to be within University City.
+     */
+    private Point curCoordinate = new Point(-75.1985766682, 39.9502619446);
     private List<EBPost> ebCompletePostList;
     private int postCount;
 
@@ -77,12 +85,26 @@ public class EBPostReader {
         return ebCompletePostList;
     }
 
-    protected boolean hasNextPage(JSONObject jsPage) {
-        return !jsPage.isNull("next");
+    public void refreshLocation() {
+        // Check if still in current location
+        if (curLocation.contains(curCoordinate)) {
+            return;
+        }
+        List<EBLocation> locations = DBWrapper.getInstance().getEBLocations();
+        for (EBLocation loc : locations) {
+            if (loc.contains(curCoordinate)) {
+                curLocation = loc;
+                return;
+            }
+        }
     }
 
-    protected List<EBPost> getEbCompletePostList() {
+    public List<EBPost> getEbCompletePostList() {
         return ebCompletePostList;
+    }
+
+    protected boolean hasNextPage(JSONObject jsPage) {
+        return !jsPage.isNull("next");
     }
 
     protected int getPostCount() {

@@ -1,3 +1,5 @@
+package edu.upenn.cis.everyblock;
+
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -7,6 +9,7 @@ import org.json.JSONObject;
 public class EBLocation {
     public final String name;
 
+    private int id;
     private String slugName = null;
     private Boundary boundary;
 
@@ -16,6 +19,10 @@ public class EBLocation {
 
     public EBLocation(String name, Boundary boundary) {
         this.name = name;
+        this.boundary = boundary;
+    }
+
+    public void setBoundary(Boundary boundary) {
         this.boundary = boundary;
     }
 
@@ -48,5 +55,31 @@ public class EBLocation {
                 slugName = listItem.getString("slug");
             }
         }
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getJSON() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("{")
+                .append("\"id\":\"")
+                .append(id)
+                .append("\", \"name\":\"")
+                .append(name)
+                .append("\", \"slugName\":\"")
+                .append(slugName)
+                .append("\"");
+        if (boundary != null) {
+            sb.append(",")
+                    .append(boundary.getJSON());
+        }
+        sb.append("}");
+        return sb.toString();
     }
 }
