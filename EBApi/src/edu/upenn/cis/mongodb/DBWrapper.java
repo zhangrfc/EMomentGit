@@ -3,6 +3,8 @@ package edu.upenn.cis.mongodb;
 
 import com.mongodb.DBObject;
 import com.mongodb.MongoClient;
+import com.mongodb.client.FindIterable;
+import com.mongodb.client.MongoCursor;
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.util.JSON;
 import edu.upenn.cis.everyblock.*;
@@ -43,13 +45,30 @@ public class DBWrapper {
     }
 
     public List<EBPost> getEBPosts(String slugName) {
-        // TODO: db
-        return null;
+        List<EBPost> posts = new ArrayList<>();
+
+        FindIterable<Document> iterable = db.getCollection("posts").find();
+        MongoCursor<Document> iter = iterable.iterator();
+        while (iter.hasNext()) {
+            Document postDoc = iter.next();
+            EBPost post = new EBPost(postDoc);
+            posts.add(post);
+        }
+
+        return posts;
     }
 
     public List<EBLocation> getEBLocations() {
-        // TODO: cache locations on mongodb.
-        return null;
+        List<EBLocation> locations = new ArrayList<>();
+
+        FindIterable<Document> iterable = db.getCollection("locations").find();
+        MongoCursor<Document> iter = iterable.iterator();
+        while (iter.hasNext()) {
+            Document locDoc = iter.next();
+            EBLocation loc = new EBLocation(locDoc);
+            locations.add(loc);
+        }
+        return locations;
     }
 
     public void updateDB() {
@@ -131,9 +150,17 @@ public class DBWrapper {
             posts.addAll(reader.getEbCompletePostList());
         }
 
-        // Generate JSON for posts
         for (EBPost post : posts) {
-            
+            // Generate JSON for posts
+            Document postDoc = Document.parse(post.getJSON());
+            postsDoc.add(postDoc);
+            // Generate JSON for comments
+            if (post.getCommentCount() > 0) {
+                for (EBComment comment : post.getComments()) {
+                    Document commentDoc = Document.parse(comment.getJSON());
+                    commentsDoc.add(commentDoc);
+                }
+            }
         }
 
         db.getCollection("posts").insertMany(postsDoc);

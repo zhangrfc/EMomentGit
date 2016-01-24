@@ -1,7 +1,10 @@
 package edu.upenn.cis.everyblock;
 
+import org.bson.Document;
 import org.json.JSONArray;
 import org.json.JSONObject;
+
+import java.util.List;
 
 /**
 
@@ -20,6 +23,13 @@ public class EBLocation {
     public EBLocation(String name, Boundary boundary) {
         this.name = name;
         this.boundary = boundary;
+    }
+
+    public EBLocation(Document locDoc) {
+        id = locDoc.getInteger("id");
+        name = locDoc.getString("name");
+        slugName = locDoc.getString("slugName");
+        boundary = new Boundary((List<List<Double>>)locDoc.get("boundary"));
     }
 
     public void setBoundary(Boundary boundary) {

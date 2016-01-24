@@ -50,4 +50,19 @@ public class EBComment {
     public int getId() {
         return id;
     }
+
+    public String getJSON() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("{")
+                .append("'id': '")
+                .append(id)
+                .append("', 'avatarSrc':'")
+                .append(avatarSrc)
+                .append("', 'username':'")
+                .append(username)
+                .append("', 'content':'")
+                .append(content)
+                .append("'}");
+        return sb.toString();
+    }
 }

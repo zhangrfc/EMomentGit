@@ -2,6 +2,8 @@ package edu.upenn.cis.everyblock;
 
 import org.json.JSONArray;
 
+import java.util.List;
+
 /**
  */
 public class Boundary {
@@ -17,6 +19,16 @@ public class Boundary {
         for (int i=0; i<count; ++i) {
             JSONArray pointJS = coordinates.getJSONArray(i);
             points[i] = new Point(pointJS.getDouble(0), pointJS.getDouble(1));
+            System.out.println("edu.upenn.cis.everyblock.Point: x: " + points[i].x + " y: " + points[i].y);
+        }
+    }
+
+    public Boundary(List<List<Double>> pts) {
+        int count = pts.size();
+        points = new Point[count];
+        for (int i=0; i<count; ++i) {
+            List<Double> point = pts.get(i);
+            points[i] = new Point(point.get(0), point.get(1));
             System.out.println("edu.upenn.cis.everyblock.Point: x: " + points[i].x + " y: " + points[i].y);
         }
     }
