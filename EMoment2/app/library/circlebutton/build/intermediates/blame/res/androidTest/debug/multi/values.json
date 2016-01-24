@@ -1,0 +1,83 @@
+[
+    {
+        "outputFile": "/Users/tengyuanye/Downloads/FloatingActionButton-master/library/build/intermediates/res/merged/androidTest/debug/values/values.xml",
+        "map": [
+            {
+                "to": {
+                    "startLine": 4,
+                    "startColumn": 4,
+                    "startOffset": 3579,
+                    "endColumn": 44,
+                    "endOffset": 3619
+                },
+                "from": {
+                    "file": "/Users/tengyuanye/Downloads/FloatingActionButton-master/library/build/intermediates/bundles/debug/res/values/values.xml",
+                    "position": {
+                        "startLine": 4,
+                        "startColumn": 4,
+                        "startOffset": 3579,
+                        "endColumn": 44,
+                        "endOffset": 3619
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 5,
+                    "startColumn": 4,
+                    "startOffset": 3624,
+                    "endColumn": 46,
+                    "endOffset": 3666
+                },
+                "from": {
+                    "file": "/Users/tengyuanye/Downloads/FloatingActionButton-master/library/build/intermediates/bundles/debug/res/values/values.xml",
+                    "position": {
+                        "startLine": 5,
+                        "startColumn": 4,
+                        "startOffset": 3624,
+                        "endColumn": 46,
+                        "endOffset": 3666
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 6,
+                    "startColumn": 4,
+                    "startOffset": 3671,
+                    "endColumn": 47,
+                    "endOffset": 3714
+                },
+                "from": {
+                    "file": "/Users/tengyuanye/Downloads/FloatingActionButton-master/library/build/intermediates/bundles/debug/res/values/values.xml",
+                    "position": {
+                        "startLine": 6,
+                        "startColumn": 4,
+                        "startOffset": 3671,
+                        "endColumn": 47,
+                        "endOffset": 3714
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 7,
+                    "startColumn": 4,
+                    "startOffset": 3719,
+                    "endColumn": 38,
+                    "endOffset": 3753
+                },
+                "from": {
+                    "file": "/Users/tengyuanye/Downloads/FloatingActionButton-master/library/build/intermediates/bundles/debug/res/values/values.xml",
+                    "position": {
+                        "startLine": 7,
+                        "startColumn": 4,
+                        "startOffset": 3719,
+                        "endColumn": 38,
+                        "endOffset": 3753
+                    }
+                }
+            }
+        ]
+    }
+]
