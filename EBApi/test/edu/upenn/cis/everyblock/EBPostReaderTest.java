@@ -43,6 +43,19 @@ public class EBPostReaderTest {
     }
 
     @Test
+    public void getAllPostsTest2() {
+        EBPostReader reader = new EBPostReader(loc);
+        reader.retrieveAllEBPostsDB();
+        Assert.assertEquals(reader.getPostCount(), reader.getEbCompletePostList().size());
+
+        EBPost randPost = reader.getEbCompletePostList().get(200);
+        System.out.println(randPost.getTitle());
+        System.out.println(randPost.getContent());
+        Assert.assertNotEquals(null, randPost.getTitle());
+        Assert.assertNotEquals(null, randPost.getContent());
+    }
+
+    @Test
     public void sortedPostTest() {
         EBPostReader reader = new EBPostReader(loc);
         List<EBPost> posts = reader.retrieveSortedEBPosts();
@@ -51,5 +64,17 @@ public class EBPostReaderTest {
         assertEquals(true, posts.get(3).getDistance() < posts.get(7).getDistance());
         assertEquals(true, posts.get(1).getDistance() < posts.get(7).getDistance());
         assertEquals(true, posts.get(7).getDistance() < posts.get(103).getDistance());
+    }
+
+    @Test
+    public void refreshLocationTest() {
+        // TODO: test refresh location
+        // coordinates default in university city
+        // start with location as somewhere else
+        // after refreshing, location should change.
+        EBLocation location = new EBLocation("Allegheny West");
+        EBPostReader reader = new EBPostReader(location);
+        reader.refreshLocation();
+        assertEquals("university-city", reader.getCurLocation().getSlugName());
     }
 }

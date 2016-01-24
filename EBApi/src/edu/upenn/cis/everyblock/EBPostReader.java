@@ -69,6 +69,12 @@ public class EBPostReader {
 
     }
 
+    public void retrieveAllEBPostsDB() {
+        ebCompletePostList = DBWrapper.getInstance().getEBPosts(
+                curLocation.getSlugName()
+        );
+    }
+
     public List<EBPost> retrieveSortedEBPosts() {
         if (ebCompletePostList == null) {
             retrieveAllEBPosts();
@@ -109,5 +115,13 @@ public class EBPostReader {
 
     protected int getPostCount() {
         return postCount;
+    }
+
+    public EBLocation getCurLocation() {
+        return curLocation;
+    }
+
+    public Point getCurCoordinate() {
+        return curCoordinate;
     }
 }
