@@ -1,0 +1,26 @@
+[
+    {
+        "merged": "/Users/tengyuanye/Downloads/FloatingActionButton-master/library/build/intermediates/res/merged/androidTest/debug/anim/fab_slide_in_from_right.xml",
+        "source": "/Users/tengyuanye/Downloads/FloatingActionButton-master/library/build/intermediates/bundles/debug/res/anim/fab_slide_in_from_right.xml"
+    },
+    {
+        "merged": "/Users/tengyuanye/Downloads/FloatingActionButton-master/library/build/intermediates/res/merged/androidTest/debug/anim/fab_scale_up.xml",
+        "source": "/Users/tengyuanye/Downloads/FloatingActionButton-master/library/build/intermediates/bundles/debug/res/anim/fab_scale_up.xml"
+    },
+    {
+        "merged": "/Users/tengyuanye/Downloads/FloatingActionButton-master/library/build/intermediates/res/merged/androidTest/debug/anim/fab_scale_down.xml",
+        "source": "/Users/tengyuanye/Downloads/FloatingActionButton-master/library/build/intermediates/bundles/debug/res/anim/fab_scale_down.xml"
+    },
+    {
+        "merged": "/Users/tengyuanye/Downloads/FloatingActionButton-master/library/build/intermediates/res/merged/androidTest/debug/anim/fab_slide_in_from_left.xml",
+        "source": "/Users/tengyuanye/Downloads/FloatingActionButton-master/library/build/intermediates/bundles/debug/res/anim/fab_slide_in_from_left.xml"
+    },
+    {
+        "merged": "/Users/tengyuanye/Downloads/FloatingActionButton-master/library/build/intermediates/res/merged/androidTest/debug/anim/fab_slide_out_to_left.xml",
+        "source": "/Users/tengyuanye/Downloads/FloatingActionButton-master/library/build/intermediates/bundles/debug/res/anim/fab_slide_out_to_left.xml"
+    },
+    {
+        "merged": "/Users/tengyuanye/Downloads/FloatingActionButton-master/library/build/intermediates/res/merged/androidTest/debug/anim/fab_slide_out_to_right.xml",
+        "source": "/Users/tengyuanye/Downloads/FloatingActionButton-master/library/build/intermediates/bundles/debug/res/anim/fab_slide_out_to_right.xml"
+    }
+]
