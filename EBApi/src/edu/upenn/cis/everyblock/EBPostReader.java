@@ -60,7 +60,7 @@ public class EBPostReader {
             // retrieve posts
             JSONArray arr = jsPage.getJSONArray("results");
             for (int i=0; i<arr.length(); ++i) {
-                EBPost post = new EBPost(arr.getJSONObject(i));
+                EBPost post = new EBPost(arr.getJSONObject(i), curLocation.getSlugName());
                 ebCompletePostList.add(post);
             }
 

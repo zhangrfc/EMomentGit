@@ -1,5 +1,7 @@
 package edu.upenn.cis.everyblock;
 
+import com.mongodb.client.FindIterable;
+import edu.upenn.cis.mongodb.DBWrapper;
 import org.json.JSONObject;
 import org.jsoup.HttpStatusException;
 import org.jsoup.Jsoup;
@@ -33,12 +35,16 @@ public class EBPost {
      */
     private String photoTitleSrc = "emoment.png";
 
+    private String slugName;
+
     private List<String> photoSrcs;
 
     private List<EBComment> comments;
 
-    public EBPost(JSONObject jsPost) {
+    public EBPost(JSONObject jsPost, String slugName) {
         try {
+            this.slugName = slugName;
+
             id = jsPost.getInt("id");
             title = jsPost.getString("title");
             JSONObject jsCoordinate = jsPost.getJSONArray("location_coordinates")
@@ -67,22 +73,26 @@ public class EBPost {
     }
 
     public EBPost(org.bson.Document postDoc) {
-        id = postDoc.getInteger("id");
+        slugName = postDoc.getString("slugName");
+
+        id = Integer.parseInt(postDoc.getString("id"));
         title = postDoc.getString("title");
-        List<Double> coordinateList = (List<Double>) postDoc.get("coordinate");
+        List<Double> coordinateList = (List<Double>) postDoc.get("coordinates");
         coordinate = new Point(coordinateList.get(0), coordinateList.get(1));
         schema = postDoc.getString("schema");
         postUrl = postDoc.getString("url");
-        reactionScore = postDoc.getInteger("reactionScore");
-        reactionCount = postDoc.getInteger("reactionCount");
-        commentCount = postDoc.getInteger("commentCount");
+        reactionScore = Integer.parseInt(postDoc.getString("reactionScore"));
+        reactionCount = Integer.parseInt(postDoc.getString("reactionCount"));
+        commentCount = Integer.parseInt(postDoc.getString("commentCount"));
         if (postDoc.get("photoSrcs") != null) {
             photoSrcs = (List<String>) postDoc.get("photoSrcs");
         }
         if (commentCount > 0) {
-            List<Integer> comments = (List<Integer>)postDoc.get("comments");
-            for (Integer comment : comments) {
-                
+            comments = new ArrayList<>();
+            List<String> commentIds = (List<String>)postDoc.get("comments");
+            for (String commentId : commentIds) {
+                EBComment comment = DBWrapper.getInstance().getEBComment(Integer.parseInt(commentId));
+
             }
 
         }
@@ -179,58 +189,82 @@ public class EBPost {
         return comments;
     }
 
-    public String getJSON() {
-        StringBuilder sb = new StringBuilder();
-        sb.append("{")
-                .append("'id':'")
-                .append(id)
-                .append("', 'title':'")
-                .append(title)
-                .append("', 'coordinates':[")
-                .append(coordinate.x)
-                .append(",")
-                .append(coordinate.y)
-                .append("], 'contnet':'")
-                .append(content)
-                .append("', 'schema':'")
-                .append(schema)
-                .append("', 'url':'")
-                .append(postUrl)
-                .append("', 'reactionScore':'")
-                .append(reactionScore)
-                .append("', 'reactionCount':'")
-                .append(reactionCount)
-                .append("', 'commentCount':'")
-                .append(commentCount)
-                .append("', 'photoTitleSrc':'")
-                .append(photoTitleSrc)
-                .append("'");
-        if (photoSrcs.size() > 0) {
-            sb.append(", 'photoSrc':[");
-            boolean first = true;
-            for (String photoSrc : photoSrcs) {
-                if (!first) sb.append(", ");
-                else first = false;
-                sb.append("'");
-                sb.append(photoSrc);
-                sb.append("'");
-            }
-            sb.append("]");
-        }
+    public String getPhotoTitleSrc() {
+        return photoTitleSrc;
+    }
 
-        if (comments.size() > 0) {
-            sb.append(", 'comments':[");
-            boolean first = true;
-            for (EBComment comment : comments) {
-                if (!first) sb.append(", ");
-                else first = false;
-                sb.append("'");
-                sb.append(comment.getId());
-                sb.append("'");
+    public String getSlugName() {
+        return slugName;
+    }
+
+    public String getJSON() {
+        try {
+            String replacedTitle;
+            if (title != null) {
+                replacedTitle = title.replaceAll("\"", "'");
+            } else replacedTitle = "";
+            String replacedContent;
+            if (content != null) {
+                replacedContent = content.replaceAll("\"", "'");
+            } else replacedContent = "";
+
+            StringBuilder sb = new StringBuilder();
+            sb.append("{")
+                    .append("'id':'")
+                    .append(id)
+                    .append("', 'title':\"")
+                    .append(replacedTitle)
+                    .append("\", 'slugName':\"")
+                    .append(slugName)
+                    .append("\", 'coordinates':[")
+                    .append(coordinate.x)
+                    .append(",")
+                    .append(coordinate.y)
+                    .append("], 'content':\"")
+                    .append(replacedContent)
+                    .append("\", 'schema':'")
+                    .append(schema)
+                    .append("', 'url':'")
+                    .append(postUrl)
+                    .append("', 'reactionScore':'")
+                    .append(reactionScore)
+                    .append("', 'reactionCount':'")
+                    .append(reactionCount)
+                    .append("', 'commentCount':'")
+                    .append(commentCount)
+                    .append("', 'photoTitleSrc':'")
+                    .append(photoTitleSrc)
+                    .append("'");
+            if (photoSrcs.size() > 0) {
+                sb.append(", 'photoSrc':[");
+                boolean first = true;
+                for (String photoSrc : photoSrcs) {
+                    if (!first) sb.append(", ");
+                    else first = false;
+                    sb.append("'");
+                    sb.append(photoSrc);
+                    sb.append("'");
+                }
+                sb.append("]");
             }
-            sb.append("]");
+
+            if (comments != null && comments.size() > 0) {
+                sb.append(", 'comments':[");
+                boolean first = true;
+                for (EBComment comment : comments) {
+                    if (!first) sb.append(", ");
+                    else first = false;
+                    sb.append("'");
+                    sb.append(comment.getId());
+                    sb.append("'");
+                }
+                sb.append("]");
+            }
+            sb.append("}");
+            return sb.toString();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
         }
-        sb.append("}");
-        return sb.toString();
     }
 }

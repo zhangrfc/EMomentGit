@@ -26,7 +26,7 @@ public class EBLocation {
     }
 
     public EBLocation(Document locDoc) {
-        id = locDoc.getInteger("id");
+        id = Integer.parseInt(locDoc.getString("id"));
         name = locDoc.getString("name");
         slugName = locDoc.getString("slugName");
         boundary = new Boundary((List<List<Double>>)locDoc.get("boundary"));

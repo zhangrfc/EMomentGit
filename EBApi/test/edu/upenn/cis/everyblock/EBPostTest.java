@@ -19,7 +19,7 @@ public class EBPostTest {
         JSONObject jsPost = new JSONObject(jsStr).getJSONArray("results")
                 .getJSONObject(0);
 
-        EBPost post = new EBPost(jsPost);
+        EBPost post = new EBPost(jsPost, "university-city");
         Assert.assertNotEquals(null, post.getId());
         Assert.assertNotEquals(null, post.getCommentCount());
         Assert.assertNotEquals(null, post.getContent());
@@ -42,7 +42,7 @@ public class EBPostTest {
             // Find the snow post
             if (arr.getJSONObject(i).getInt("id") == 2219385) {
                 JSONObject jsPost = arr.getJSONObject(i);
-                EBPost post = new EBPost(jsPost);
+                EBPost post = new EBPost(jsPost, "university-city");
                 // Check images.
                 Assert.assertEquals(2, post.getPhotoSrcs().size());
                 Assert.assertEquals("https://everyblock.s3.amazonaws.com/photos/c/c6a92ce9/1878/4a1ff713c9a69da9a1806d0d791a138c-med.jpg",
@@ -64,7 +64,7 @@ public class EBPostTest {
             // Find the snow post
             if (arr.getJSONObject(i).getInt("id") == 2219331) {
                 JSONObject jsPost = arr.getJSONObject(i);
-                EBPost post = new EBPost(jsPost);
+                EBPost post = new EBPost(jsPost, "university-city");
                 post.retrieveComments();
                 // Check comments
                 Assert.assertEquals(post.getCommentCount(), post.getComments().size());

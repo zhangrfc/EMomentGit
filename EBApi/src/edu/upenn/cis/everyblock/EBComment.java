@@ -12,6 +12,8 @@ public class EBComment {
     private String username;
     private String content;
 
+    public EBComment() {}
+
     public EBComment(Element elem) {
         init(elem);
     }
@@ -49,6 +51,10 @@ public class EBComment {
 
     public int getId() {
         return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getJSON() {

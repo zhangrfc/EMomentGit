@@ -47,15 +47,34 @@ public class DBWrapper {
     public List<EBPost> getEBPosts(String slugName) {
         List<EBPost> posts = new ArrayList<>();
 
+        EBLocation loc = nameLocMap.get(slugName);
         FindIterable<Document> iterable = db.getCollection("posts").find();
         MongoCursor<Document> iter = iterable.iterator();
         while (iter.hasNext()) {
             Document postDoc = iter.next();
             EBPost post = new EBPost(postDoc);
-            posts.add(post);
+            if (post.getSlugName().compareTo(slugName) == 0) {
+                posts.add(post);
+            }
         }
 
         return posts;
+    }
+
+    public EBComment getEBComment(int commentId) {
+        FindIterable<Document> iterable = db.getCollection("comments").find(
+                new Document("id", commentId)
+        );
+        if (iterable.iterator().hasNext()) {
+            Document commentDoc = iterable.iterator().next();
+            EBComment comment = new EBComment();
+            comment.setAvatarSrc(commentDoc.getString("avatarSrc"));
+            comment.setId(commentId);
+            comment.setContent(commentDoc.getString("content"));
+            comment.setUsername(commentDoc.getString("username"));
+            return comment;
+        } else System.out.println("Comment id Unmatch.");
+        return null;
     }
 
     public List<EBLocation> getEBLocations() {
@@ -92,6 +111,7 @@ public class DBWrapper {
         String locsJSStr = EBConn.getJSON(locsUrl);
         JSONArray locsArr = new JSONArray(locsJSStr);
         for (int i=0; i<locsArr.length(); ++i) {
+        //for (int i=0; i<1; ++i) {
             JSONObject item = locsArr.getJSONObject(i);
             int id = item.getInt("id");
             String name = item.getString("name");
@@ -127,6 +147,7 @@ public class DBWrapper {
             String name = pair.getKey();
             EBLocation loc = pair.getValue();
             System.out.println("JSON: " + loc.getJSON());
+            if (loc.getJSON() == null) continue;
             db.getCollection("locations").insertOne(Document.parse(loc.getJSON()));
         }
     }
@@ -152,6 +173,7 @@ public class DBWrapper {
 
         for (EBPost post : posts) {
             // Generate JSON for posts
+            System.out.println(post.getJSON());
             Document postDoc = Document.parse(post.getJSON());
             postsDoc.add(postDoc);
             // Generate JSON for comments

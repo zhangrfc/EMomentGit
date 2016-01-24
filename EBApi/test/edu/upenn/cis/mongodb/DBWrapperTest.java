@@ -11,5 +11,9 @@ public class DBWrapperTest {
     @Test
     public void createDBTest() {
         DBWrapper.getInstance().updateDB();
+
+        DBWrapper.getInstance().getEBLocations();
+        DBWrapper.getInstance().getEBPosts("allegheny-west");
     }
+
 }
