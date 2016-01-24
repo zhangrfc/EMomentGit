@@ -1,6 +1,9 @@
 package edu.upenn.cis.mongodb;
 
+import edu.upenn.cis.everyblock.EBLocation;
 import org.junit.Test;
+
+import java.util.List;
 
 import static org.junit.Assert.*;
 
@@ -12,8 +15,11 @@ public class DBWrapperTest {
     public void createDBTest() {
         DBWrapper.getInstance().updateDB();
 
-        DBWrapper.getInstance().getEBLocations();
-        DBWrapper.getInstance().getEBPosts("allegheny-west");
+        List<EBLocation> locations = DBWrapper.getInstance().getEBLocations();
+        for (EBLocation loc : locations) {
+            System.out.println("Getting post: " + loc.getSlugName());
+            DBWrapper.getInstance().getEBPosts(loc.getSlugName());
+        }
     }
 
 }

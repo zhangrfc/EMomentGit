@@ -111,7 +111,7 @@ public class DBWrapper {
         String locsJSStr = EBConn.getJSON(locsUrl);
         JSONArray locsArr = new JSONArray(locsJSStr);
         for (int i=0; i<locsArr.length(); ++i) {
-        //for (int i=0; i<1; ++i) {
+        //for (int i=0; i<10; ++i) {
             JSONObject item = locsArr.getJSONObject(i);
             int id = item.getInt("id");
             String name = item.getString("name");

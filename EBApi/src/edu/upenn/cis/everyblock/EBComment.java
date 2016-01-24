@@ -66,8 +66,12 @@ public class EBComment {
                 .append(avatarSrc)
                 .append("', 'username':'")
                 .append(username)
-                .append("', 'content':'")
-                .append(content)
+                .append("', 'content':'");
+        String replacedContent;
+        if (content != null) {
+            replacedContent = content.replaceAll("'", "\"");
+        } else replacedContent = "";
+        sb.append(replacedContent)
                 .append("'}");
         return sb.toString();
     }
